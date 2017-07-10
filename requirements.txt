@@ -1,0 +1,8 @@
+geopy==1.11.0
+gpxpy==1.1.2
+image==1.5.5
+matplotlib==2.0.2
+mplleaflet==0.0.5
+pandas==0.20.1
+tqdm==4.11.2
+smopy==0.0.6
