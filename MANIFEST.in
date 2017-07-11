@@ -1,7 +1,7 @@
 # Misc
-include LICENCE
+include LICENSE
 include README.rst
-include requirements.py
+include requirements.txt
 
 # Examples/Documentation
 include Documentation.pdf

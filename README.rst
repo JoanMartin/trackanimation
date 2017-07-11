@@ -18,9 +18,7 @@ To create a basic visualization, simply read the files and pass them to the *Ani
 	fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=True, map_transparency=0.5)
 	fig.makeVideo(output_file='simple-example', framerate=60, linewidth=1.0)
 
-
 |Simple-Example|
-
 
 
 Dependencies
@@ -36,7 +34,6 @@ Dependencies
 * `FFmpeg <https://ffmpeg.org/>`__
 
 
-
 Installation
 ------------
 Install **Track Animation** using `pip <http://www.pip-installer.org/en/latest/>`__ with:
@@ -46,16 +43,13 @@ Install **Track Animation** using `pip <http://www.pip-installer.org/en/latest/>
 Or, `download the source files from PyPI <https://pypi.python.org/pypi/trackanimation>`__.
 
 
-
 Getting Started
 ---------------
-
-You can find the following examples in the `examples.py <examples.py>`__ file.
+You can find the following examples in the `examples.py <https://raw.githubusercontent.com/JoanMartin/trackanimation/master/examples.py>`__ file.
 
 
 Filtering by place
 ~~~~~~~~~~~~~~~~~~
-
 It is possible to filter a set of tracks to retrieve only the points that belong to an specific place or the whole tracks that have passed by there. With the function *timeVideoNormalize*, all the tracks will start and end at the same time in the video, specyfing its duration and frame rate in the parameters. In the next example, the video created has a duration of 10 seconds with 10 frames per second.
 
 .. code:: python
@@ -70,7 +64,6 @@ It is possible to filter a set of tracks to retrieve only the points that belong
 
 	fig = AnimationTrack(df_points=sant_josep_trk, dpi=300, bg_map=True, map_transparency=0.5)
 	fig.makeVideo(output_file='filtering-by-place', framerate=10, linewidth=1.0)
-
 
 |Filtering-Place|
 
@@ -96,11 +89,9 @@ Furthermore, an indicator of the tracks can be visualized as a palette of colors
 	fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=False, map_transparency=0.5)
 	fig.makeMap(output_file='coloring-map-by-speed')
 
-
-`Click to view the interactive map <http://htmlpreview.github.io/?https://github.com/JoanMartin/trackanimation/master/example-results/coloring-map-by-speed.html>`__
+`Click to view the interactive map <http://htmlpreview.github.io/?https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/coloring-map-by-speed.html>`__
 
 |Coloring-Tracks|
-
 
 
 Visualizing multiple set of tracks
@@ -122,18 +113,16 @@ Multiple sets of tracks can be plotted independently in the same visualization t
 	fig = AnimationTrack(df_points=[ibiza_trk, sant_josep_trk], dpi=300, bg_map=True, map_transparency=0.5)
 	fig.makeImage(output_file='multiple-axes')
 
-
 |Multiple-Axes|
-
 
 
 Documentation
 -------------
-More documentation and examples can be found at `Track Animation PDF document <Documentation.pdf>`__.
+More documentation and examples can be found at `Track Animation PDF document <https://raw.githubusercontent.com/JoanMartin/trackanimation/master/Documentation.pdf>`__.
 
 
 
-.. |Simple-Example| image:: example-results/simple-example.gif
-.. |Filtering-Place| image:: example-results/filtering-by-place.gif
-.. |Coloring-Tracks| image:: example-results/coloring-map-by-speed.gif
-.. |Multiple-Axes| image:: example-results/multiple-axes.png
+.. |Simple-Example| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/simple-example.gif
+.. |Filtering-Place| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/filtering-by-place.gif
+.. |Coloring-Tracks| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/coloring-map-by-speed.gif
+.. |Multiple-Axes| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/multiple-axes.png

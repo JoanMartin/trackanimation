@@ -12,7 +12,7 @@ check-all-commited:
 pypi-upload: check-all-commited 
 	python setup.py sdist
 	python setup.py bdist_wheel --universal
-	twine upload dist/*
+	twine upload --skip-existing dist/*
 
 clean:
 	-find . -name '*.py[co]' -exec rm {} \;
