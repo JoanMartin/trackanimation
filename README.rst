@@ -8,6 +8,7 @@ The main third party libraries that **Track Animation** uses are `gpxpy <https:/
 To create a basic visualization, simply read the files and pass them to the *AnimationTrack* class:
 
 .. code:: python
+
 	import trackanimation
 	from trackanimation.animation import AnimationTrack
 
@@ -58,6 +59,7 @@ Filtering by place
 It is possible to filter a set of tracks to retrieve only the points that belong to an specific place or the whole tracks that have passed by there. With the function *timeVideoNormalize*, all the tracks will start and end at the same time in the video, specyfing its duration and frame rate in the parameters. In the next example, the video created has a duration of 10 seconds with 10 frames per second.
 
 .. code:: python
+
 	import trackanimation
 	from trackanimation.animation import AnimationTrack
 
@@ -78,6 +80,7 @@ Coloring tracks by one indicator
 Furthermore, an indicator of the tracks can be visualized as a palette of colors to make the analysis and the interpretation of the data easier and effective.
 
 .. code:: python
+
 	import trackanimation
 	from trackanimation.animation import AnimationTrack
 
@@ -105,6 +108,7 @@ Visualizing multiple set of tracks
 Multiple sets of tracks can be plotted independently in the same visualization to compare them.
 
 .. code:: python
+
 	import trackanimation
 	from trackanimation.animation import AnimationTrack
 
