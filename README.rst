@@ -1,12 +1,6 @@
 Track Animation
 ===============
 
-|PyPI-Status| |PyPI-Versions| |Conda-Forge-Status|
-
-|Build-Status| |Coverage-Status| |Branch-Coverage-Status| |Codacy-Grade|
-
-|DOI-URI| |LICENCE|
-
 **Track Animation** is a Python 2 and 3 library that provides and easy and user-adjustable way of **creating visualizations from GPS data** easily and without any kind of technical tie for the user. It allows to import GPS data from **GPX** (GPS eXchange Format) and CSV files in order to manipulate it and, finally, create **videos**, **images**, sequences of images or **interactive maps** to analyze the tracks based on their elevation, speed, duration or any other indicator.
 
 The main third party libraries that **Track Animation** uses are `gpxpy <https://github.com/tkrajina/gpxpy>`__ to parse and read GPX files, `pandas <http://pandas.pydata.org/>`__ to manipulate all the GPS data and `matplotlib <https://matplotlib.org/>`__ to plot it and save the visualizations.
@@ -24,7 +18,7 @@ To create a basic visualization, simply read the files and pass them to the *Ani
 	fig.makeVideo(output_file='simple-example', framerate=60, linewidth=1.0)
 
 
-![Simple example](example-results/simple-example.gif)
+|Simple-Example|
 
 
 
@@ -44,9 +38,6 @@ Dependencies
 
 Installation
 ------------
-
-|GitHub-Status| |GitHub-Stars| |GitHub-Forks|
-
 Install **Track Animation** using `pip <http://www.pip-installer.org/en/latest/>`__ with:
 
     pip install trackanimation
@@ -58,8 +49,7 @@ Or, `download the source files from PyPI <https://pypi.python.org/pypi/trackanim
 Getting Started
 ---------------
 
-You can find the following examples in the [examples.py](examples.py) file.
-
+You can find the following examples in the `examples.py <examples.py>`__ file.
 
 
 Filtering by place
@@ -80,13 +70,11 @@ It is possible to filter a set of tracks to retrieve only the points that belong
 	fig.makeVideo(output_file='filtering-by-place', framerate=10, linewidth=1.0)
 
 
-![Filtering by place and normalizing](example-results/filtering-by-place.gif)
-
+|Filtering-Place|
 
 
 Coloring tracks by one indicator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Furthermore, an indicator of the tracks can be visualized as a palette of colors to make the analysis and the interpretation of the data easier and effective.
 
 .. code:: python
@@ -106,15 +94,14 @@ Furthermore, an indicator of the tracks can be visualized as a palette of colors
 	fig.makeMap(output_file='coloring-map-by-speed')
 
 
-[Click to view the interactive map](http://htmlpreview.github.io/?https://github.com/JoanMartin/trackanimation/master/example-results/coloring-map-by-speed.html)
+`Click to view the interactive map <http://htmlpreview.github.io/?https://github.com/JoanMartin/trackanimation/master/example-results/coloring-map-by-speed.html>`__
 
-![Coloring tracks by their speed](example-results/coloring-map-by-speed.gif)
+|Coloring-Tracks|
 
 
 
 Visualizing multiple set of tracks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 Multiple sets of tracks can be plotted independently in the same visualization to compare them.
 
 .. code:: python
@@ -138,9 +125,11 @@ Multiple sets of tracks can be plotted independently in the same visualization t
 
 Documentation
 -------------
-
-More documentation and examples can be found at [Track Animation PDF document](Documentation.pdf).
-
+More documentation and examples can be found at `Track Animation PDF document <Documentation.pdf>`__.
 
 
+
+.. |Simple-Example| image:: example-results/simple-example.gif
+.. |Filtering-Place| image:: example-results/filtering-by-place.gif
+.. |Coloring-Tracks| image:: example-results/coloring-map-by-speed.gif
 .. |Multiple-Axes| image:: example-results/multiple-axes.png
