@@ -10,8 +10,7 @@ check-all-commited:
 	fi
 	
 pypi-upload: check-all-commited 
-	python setup.py register
-	python setup.py sdist upload --sign
+	python setup.py sdist
 
 clean:
 	-find . -name '*.py[co]' -exec rm {} \;
