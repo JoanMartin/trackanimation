@@ -45,7 +45,7 @@ Or, `download the source files from PyPI <https://pypi.python.org/pypi/trackanim
 
 Getting Started
 ---------------
-You can find the following examples in the `examples.py <https://raw.githubusercontent.com/JoanMartin/trackanimation/master/examples.py>`__ file.
+You can find the following examples in the `examples.py <https://github.com/JoanMartin/trackanimation/master/examples.py>`__ file.
 
 
 Filtering by place
@@ -118,7 +118,7 @@ Multiple sets of tracks can be plotted independently in the same visualization t
 
 Documentation
 -------------
-More documentation and examples can be found at `Track Animation PDF document <https://raw.githubusercontent.com/JoanMartin/trackanimation/master/Documentation.pdf>`__.
+More documentation and examples can be found at `Track Animation PDF document <https://github.com/JoanMartin/trackanimation/master/Documentation.pdf>`__.
 
 
 
