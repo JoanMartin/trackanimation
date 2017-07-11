@@ -1,0 +1,10 @@
+# Misc
+include LICENCE
+include README.rst
+include requirements.py
+
+# Examples/Documentation
+include Documentation.pdf
+include examples.py
+recursive-include example-routes *
+recursive-include example-results *

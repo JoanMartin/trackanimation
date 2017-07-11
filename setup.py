@@ -47,6 +47,10 @@ setup(
 
 		"License :: OSI Approved :: Apache Software License",
 
+		"Intended Audience :: Education",
+		"Intended Audience :: End Users/Desktop",
+		"Intended Audience :: Science/Research",
+
 		"Topic :: Software Development :: Libraries :: Python Modules",
 		"Topic :: Multimedia :: Video",
 

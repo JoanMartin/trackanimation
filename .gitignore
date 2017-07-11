@@ -18,6 +18,7 @@ xsd/*.xsd
 dist
 build
 eggs
+.eggs
 parts
 bin
 var
