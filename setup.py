@@ -29,7 +29,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
 	name='trackanimation',
 
-	version='1.0.2',
+	version='1.0.3-SNAPSHOT',
 
 	description='GPS Track Animation Library',
 	long_description=long_description,

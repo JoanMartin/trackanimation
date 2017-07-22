@@ -134,7 +134,7 @@ class AnimationTrack:
 	def computeTracks(self, linewidth=0.5):
 		df = self.track_df.getTracks().df
 
-		df['track_code'] = df['CodeRoute'] + '_' + df['Axes'].map(str)
+		df['track_code'] = df['CodeRoute'].map(str) + '_' + df['Axes'].map(str)
 		grouped = df['track_code'].unique()
 
 		for name in tqdm(grouped, desc='Groups'):
