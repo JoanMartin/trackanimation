@@ -59,7 +59,7 @@ It is possible to filter a set of tracks to retrieve only the points that belong
 
     input_directory = "example-routes/"
     ibiza_trk = trackanimation.read_track(input_directory)
-    sant_josep_trk = ibiza_trk.getTracksByPlace('Sant Josep de sa Talaia', only_points=False)
+    sant_josep_trk = ibiza_trk.get_tracks_by_place('Sant Josep de sa Talaia', only_points=False)
     sant_josep_trk = sant_josep_trk.time_video_normalize(time=10, framerate=10)
 
     fig = AnimationTrack(df_points=sant_josep_trk, dpi=300, bg_map=True, map_transparency=0.5)
