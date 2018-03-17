@@ -23,12 +23,12 @@ from trackanimation.tracking import ReadTrack
 from trackanimation.tracking import TrackException
 
 
-def readTrack(directory_or_file, files_to_read=None):
-	read_track = ReadTrack(directory_or_file)
+def read_track(directory_or_file, files_to_read=None):
+    read_track = ReadTrack(directory_or_file)
 
-	if directory_or_file.lower().endswith(('.csv')):
-		return read_track.readCSV()
-	elif directory_or_file.lower().endswith(('.gpx')) or os.path.isdir(directory_or_file):
-		return read_track.readGPX(files_to_read)
-	else:
-		raise TrackException('Must specify a valid file name', directory_or_file)
+    if directory_or_file.lower().endswith(('.csv')):
+        return read_track.read_csv()
+    elif directory_or_file.lower().endswith(('.gpx')) or os.path.isdir(directory_or_file):
+        return read_track.read_gpx(files_to_read)
+    else:
+        raise TrackException('Must specify a valid file name', directory_or_file)

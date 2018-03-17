@@ -9,14 +9,14 @@ To create a basic visualization, simply read the files and pass them to the *Ani
 
 .. code:: python
 
-	import trackanimation
-	from trackanimation.animation import AnimationTrack
+    import trackanimation
+    from trackanimation.animation import AnimationTrack
 
-	input_directory = "example-routes/"
-	ibiza_trk = trackanimation.readTrack(input_directory)
+    input_directory = "example-routes/"
+    ibiza_trk = trackanimation.read_track(input_directory)
 
-	fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=True, map_transparency=0.5)
-	fig.makeVideo(output_file='simple-example', framerate=60, linewidth=1.0)
+    fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=True, map_transparency=0.5)
+    fig.make_video(output_file='simple-example', framerate=60, linewidth=1.0)
 
 |Simple-Example|
 
@@ -54,16 +54,16 @@ It is possible to filter a set of tracks to retrieve only the points that belong
 
 .. code:: python
 
-	import trackanimation
-	from trackanimation.animation import AnimationTrack
+    import trackanimation
+    from trackanimation.animation import AnimationTrack
 
-	input_directory = "example-routes/"
-	ibiza_trk = trackanimation.readTrack(input_directory)
-	sant_josep_trk = ibiza_trk.getTracksByPlace('Sant Josep de sa Talaia', only_points=False)
-	sant_josep_trk = sant_josep_trk.timeVideoNormalize(time=10, framerate=10)
+    input_directory = "example-routes/"
+    ibiza_trk = trackanimation.read_track(input_directory)
+    sant_josep_trk = ibiza_trk.getTracksByPlace('Sant Josep de sa Talaia', only_points=False)
+    sant_josep_trk = sant_josep_trk.time_video_normalize(time=10, framerate=10)
 
-	fig = AnimationTrack(df_points=sant_josep_trk, dpi=300, bg_map=True, map_transparency=0.5)
-	fig.makeVideo(output_file='filtering-by-place', framerate=10, linewidth=1.0)
+    fig = AnimationTrack(df_points=sant_josep_trk, dpi=300, bg_map=True, map_transparency=0.5)
+    fig.make_video(output_file='filtering-by-place', framerate=10, linewidth=1.0)
 
 |Filtering-Place|
 
@@ -74,20 +74,20 @@ Furthermore, an indicator of the tracks can be visualized as a palette of colors
 
 .. code:: python
 
-	import trackanimation
-	from trackanimation.animation import AnimationTrack
+    import trackanimation
+    from trackanimation.animation import AnimationTrack
 
-	input_directory = "example-routes/ibiza.csv"
-	ibiza_trk = trackanimation.readTrack(input_directory)
-	ibiza_trk = ibiza_trk.timeVideoNormalize(time=10, framerate=10)
-	ibiza_trk = ibiza_trk.setColors('Speed', individual_tracks=True)
+    input_directory = "example-routes/ibiza.csv"
+    ibiza_trk = trackanimation.read_track(input_directory)
+    ibiza_trk = ibiza_trk.time_video_normalize(time=10, framerate=10)
+    ibiza_trk = ibiza_trk.set_colors('Speed', individual_tracks=True)
 
-	fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=True, map_transparency=0.5)
-	fig.makeVideo(output_file='coloring-map-by-speed', framerate=10, linewidth=1.0)
+    fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=True, map_transparency=0.5)
+    fig.make_video(output_file='coloring-map-by-speed', framerate=10, linewidth=1.0)
 
-	# Variable 'bg_map' must be to False in order to create an interactive map
-	fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=False, map_transparency=0.5)
-	fig.makeMap(output_file='coloring-map-by-speed')
+    # Variable 'bg_map' must be to False in order to create an interactive map
+    fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=False, map_transparency=0.5)
+    fig.make_map(output_file='coloring-map-by-speed')
 
 `Click to view the interactive map <http://htmlpreview.github.io/?https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/coloring-map-by-speed.html>`__
 
@@ -100,18 +100,18 @@ Multiple sets of tracks can be plotted independently in the same visualization t
 
 .. code:: python
 
-	import trackanimation
-	from trackanimation.animation import AnimationTrack
+    import trackanimation
+    from trackanimation.animation import AnimationTrack
 
-	input_directory = "example-routes/"
-	ibiza_trk = trackanimation.readTrack(input_directory)
-	sant_josep_trk = ibiza_trk.getTracksByPlace('Sant Josep de sa Talaia', only_points=False)
+    input_directory = "example-routes/"
+    ibiza_trk = trackanimation.read_track(input_directory)
+    sant_josep_trk = ibiza_trk.get_tracks_by_place('Sant Josep de sa Talaia', only_points=False)
 
-	ibiza_trk = ibiza_trk.setColors('Speed', individual_tracks=True)
-	sant_josep_trk = sant_josep_trk.setColors('Speed', individual_tracks=True)
+    ibiza_trk = ibiza_trk.set_colors('Speed', individual_tracks=True)
+    sant_josep_trk = sant_josep_trk.set_colors('Speed', individual_tracks=True)
 
-	fig = AnimationTrack(df_points=[ibiza_trk, sant_josep_trk], dpi=300, bg_map=True, map_transparency=0.5)
-	fig.makeImage(output_file='multiple-axes')
+    fig = AnimationTrack(df_points=[ibiza_trk, sant_josep_trk], dpi=300, bg_map=True, map_transparency=0.5)
+    fig.make_image(output_file='multiple-axes')
 
 |Multiple-Axes|
 
