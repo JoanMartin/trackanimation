@@ -17,6 +17,7 @@
 
 # Python modules
 import math
+import warnings
 import datetime
 import datetime as dt
 from datetime import datetime
@@ -37,6 +38,28 @@ class TrackException(Exception):
     def __init__(self, msg, original_exception):
         super(TrackException, self).__init__(msg + (": %s" % original_exception))
         self.original_exception = original_exception
+
+
+def getBearing(start_point, end_point):
+    """
+    Calculates the bearing between two points.
+
+    Parameters
+    ----------
+    start_point: geopy.Point
+    end_point: geopy.Point
+
+    Returns
+    -------
+    point: int
+        Bearing in degrees between the start and end points.
+    """
+    warnings.warn("The getBearing function is deprecated and "
+                  "will be removed in version 1.0.6. "
+                  "Use the get_bearing function instead.",
+                  DeprecationWarning
+                  )
+    return get_bearing(start_point, end_point)
 
 
 def get_bearing(start_point, end_point):
@@ -73,6 +96,30 @@ def get_bearing(start_point, end_point):
     return bearing
 
 
+def getCoordinates(start_point, end_point, distance_meters):
+    """
+    Calculates the new coordinates between two points depending
+    of the specified distance and the calculated bearing.
+
+    Parameters
+    ----------
+    start_point: geopy.Point
+    end_point: geopy.Point
+    distance_meters: float
+
+    Returns
+    -------
+    point: geopy.Point
+        A new point between the start and the end points.
+    """
+    warnings.warn("The getCoordinates function is deprecated and "
+                  "will be removed in version 1.0.6. "
+                  "Use the get_coordinates function instead.",
+                  DeprecationWarning
+                  )
+    return get_coordinates(start_point, end_point, distance_meters)
+
+
 def get_coordinates(start_point, end_point, distance_meters):
     """
     Calculates the new coordinates between two points depending
@@ -96,6 +143,32 @@ def get_coordinates(start_point, end_point, distance_meters):
     destination = d.destination(point=start_point, bearing=bearing)
 
     return geopy.Point(destination.latitude, destination.longitude)
+
+
+def getPointInTheMiddle(start_point, end_point, time_diff, point_idx):
+    """
+    Calculates a new point between two points depending of the
+    time difference between them and the point index.
+
+    Parameters
+    ----------
+    start_point: DataFrame
+    end_point: DataFrame
+    time_diff: float
+    point_idx: int
+        Point index between the start and the end points
+
+    Returns
+    -------
+    point: list
+        A new point between the start and the end points.
+    """
+    warnings.warn("The getPointInTheMiddle function is deprecated and "
+                  "will be removed in version 1.0.6. "
+                  "Use the get_point_in_the_middle function instead.",
+                  DeprecationWarning
+                  )
+    return get_point_in_the_middle(start_point, end_point, time_diff, point_idx)
 
 
 def get_point_in_the_middle(start_point, end_point, time_diff, point_idx):
@@ -135,7 +208,7 @@ def get_point_in_the_middle(start_point, end_point, time_diff, point_idx):
     middle_point = get_coordinates(geo_start, geo_end, distance_proportion)
 
     df_middle_point = ([[name, middle_point.latitude, middle_point.longitude, altitude,
-                        date, speed, int(time_diff), distance, None, cum_time_diff]])
+                         date, speed, int(time_diff), distance, None, cum_time_diff]])
 
     return df_middle_point
 
@@ -171,15 +244,23 @@ def rgb(value, minimum, maximum):
     return r / 255.0, g / 255.0, b / 255.0
 
 
+def calculateCumTimeDiff(df):
+    """
+    Calculates the cumulative of the time difference
+    between points for each track of 'dfTrack'.
+    """
+    warnings.warn("The calculateCumTimeDiff function is deprecated and "
+                  "will be removed in version 1.0.6. "
+                  "Use the calculate_cum_time_diff function instead.",
+                  DeprecationWarning
+                  )
+    return calculate_cum_time_diff(df)
+
+
 def calculate_cum_time_diff(df):
     """
     Calculates the cumulative of the time difference
-    between points for each track of 'dfTrack'
-
-    :param df:
-    :type df: pd.DataFrame
-    :return: df_cum
-    :rtype: pd.DataFrame
+    between points for each track of 'dfTrack'.
     """
     df = df.copy()
 
@@ -195,6 +276,19 @@ def calculate_cum_time_diff(df):
     df_cum = df_cum.reset_index(drop=True)
 
     return df_cum
+
+
+def isTimeFormat(time):
+    """
+    Check if 'time' variable has the format of one
+    of the 'time_formats'
+    """
+    warnings.warn("The isTimeFormat function is deprecated and "
+                  "will be removed in version 1.0.6. "
+                  "Use the is_time_format function instead.",
+                  DeprecationWarning
+                  )
+    return is_time_format(time)
 
 
 def is_time_format(time):

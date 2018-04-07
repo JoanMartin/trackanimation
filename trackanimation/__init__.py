@@ -17,10 +17,20 @@
 
 # Python modules
 import os
+import warnings
 
 # Own modules
 from trackanimation.tracking import ReadTrack
 from trackanimation.tracking import TrackException
+
+
+def readTrack(directory_or_file, files_to_read=None):
+    warnings.warn("The readTrack function is deprecated and "
+                  "will be removed in version 1.0.6. "
+                  "Use the read_track function instead.",
+                  DeprecationWarning, stacklevel=3
+                  )
+    return read_track(directory_or_file, files_to_read)
 
 
 def read_track(directory_or_file, files_to_read=None):

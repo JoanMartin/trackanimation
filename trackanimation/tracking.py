@@ -18,6 +18,7 @@
 # Python modules
 import glob
 import os
+import warnings
 
 # Third party modules
 import gpxpy
@@ -33,7 +34,6 @@ from trackanimation.utils import TrackException
 
 
 class DFTrack:
-
     def __init__(self, df_points=None, columns=None):
         if df_points is None:
             self.df = DataFrame()
@@ -63,6 +63,25 @@ class DFTrack:
             self.df.to_csv(path_or_buf=filename + '.csv')
         else:
             raise TrackException('Must specify a valid format to export', "'%s'" % export_format)
+
+    def getTracks(self):
+        """
+        Makes a copy of the DFTrack.
+
+        Explanation:
+            http://stackoverflow.com/questions/27673231/why-should-i-make-a-copy-of-a-data-frame-in-pandas
+
+        Returns
+        -------
+        copy: DFTrack
+            The copy of DFTrack.
+        """
+        warnings.warn("The getTracks function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the get_tracks function instead.",
+                      DeprecationWarning
+                      )
+        return self.get_tracks()
 
     def get_tracks(self):
         """
@@ -97,6 +116,35 @@ class DFTrack:
 
         return self.__class__(self.df.sort_values(column_name), list(self.df))
 
+    def getTracksByPlace(self, place, timeout=10, only_points=True):
+        """
+        Gets the points of the specified place searching in Google's API
+        and, if it does not get anything, it tries with OpenStreetMap's API.
+
+        Parameters
+        ----------
+        place: string
+            Place to get the points
+        timeout: int
+            Time, in seconds, to wait for the geocoding service to respond
+            before returning a None value.
+        only_points: boolean
+            True to retrieve only the points that cross a place. False to
+            retrive all the points of the tracks that cross a place.
+
+        Returns
+        -------
+        place: DFTrack
+            A DFTrack with the points of the specified place or
+            None if anything is found.
+        """
+        warnings.warn("The getTracksByPlace function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the get_tracks_by_place function instead.",
+                      DeprecationWarning
+                      )
+        return self.get_tracks_by_place(place, timeout, only_points)
+
     def get_tracks_by_place(self, place, timeout=10, only_points=True):
         """
         Gets the points of the specified place searching in Google's API
@@ -128,6 +176,34 @@ class DFTrack:
             return track_place
 
         return None
+
+    def getTracksByPlaceGoogle(self, place, timeout=10, only_points=True):
+        """
+        Gets the points of the specified place searching in Google's API.
+
+        Parameters
+        ----------
+        place: string
+            Place to get the points
+        timeout: int
+            Time, in seconds, to wait for the geocoding service to respond
+            before returning a None value.
+        only_points: boolean
+            True to retrieve only the points that cross a place. False to
+            retrive all the points of the tracks that cross a place.
+
+        Returns
+        -------
+        place: DFTrack
+            A DFTrack with the points of the specified place or
+            None if anything is found.
+        """
+        warnings.warn("The getTracksByPlaceGoogle function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the get_tracks_by_place_google function instead.",
+                      DeprecationWarning
+                      )
+        return self.get_tracks_by_place_google(place, timeout, only_points)
 
     def get_tracks_by_place_google(self, place, timeout=10, only_points=True):
         """
@@ -170,6 +246,34 @@ class DFTrack:
         track_list = df_place['CodeRoute'].unique().tolist()
         return self.__class__(self.df[self.df['CodeRoute'].isin(track_list)])
 
+    def getTracksByPlaceOSM(self, place, timeout=10, only_points=True):
+        """
+        Gets the points of the specified place searching in OpenStreetMap's API.
+
+        Parameters
+        ----------
+        place: string
+            Place to get the points
+        timeout: int
+            Time, in seconds, to wait for the geocoding service to respond
+            before returning a None value.
+        only_points: boolean
+            True to retrieve only the points that cross a place. False to
+            retrive all the points of the tracks that cross a place.
+
+        Returns
+        -------
+        place: DFTrack
+            A DFTrack with the points of the specified place or
+            None if anything is found.
+        """
+        warnings.warn("The getTracksByPlaceOSM function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the get_tracks_by_place_osm function instead.",
+                      DeprecationWarning
+                      )
+        return self.get_tracks_by_place_osm(place, timeout, only_points)
+
     def get_tracks_by_place_osm(self, place, timeout=10, only_points=True):
         """
         Gets the points of the specified place searching in OpenStreetMap's API.
@@ -211,6 +315,38 @@ class DFTrack:
         track_list = df_place['CodeRoute'].unique().tolist()
         return self.__class__(self.df[self.df['CodeRoute'].isin(track_list)])
 
+    def getTracksByDate(self, start=None, end=None, periods=None, freq='D'):
+        """
+        Gets the points of the specified date range
+        using various combinations of parameters.
+
+        2 of 'start', 'end', or 'periods' must be specified.
+
+        Date format recommended: 'yyyy-mm-dd'
+
+        Parameters
+        ----------
+        start: date
+            Date start period
+        end: date
+            Date end period
+        periods: int
+            Number of periods. If None, must specify 'start' and 'end'
+        freq: string
+            Frequency of the date range
+
+        Returns
+        -------
+        df_date: DFTrack
+            A DFTrack with the points of the specified date range.
+        """
+        warnings.warn("The getTracksByDate function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the get_tracks_by_date function instead.",
+                      DeprecationWarning
+                      )
+        return self.get_tracks_by_date(start, end, periods, freq)
+
     def get_tracks_by_date(self, start=None, end=None, periods=None, freq='D'):
         """
         Gets the points of the specified date range
@@ -251,6 +387,31 @@ class DFTrack:
 
         return self.__class__(df_date, list(df_date))
 
+    def getTracksByTime(self, start, end, include_start=True, include_end=True):
+        """
+        Gets the points between the specified time range.
+
+        Parameters
+        ----------
+        start: datetime.time
+            Time start period
+        end: datetime.time
+            Time end period
+        include_start: boolean
+        include_end: boolean
+
+        Returns
+        -------
+        df_time: DFTrack
+            A DFTrack with the points of the specified date and time periods.
+        """
+        warnings.warn("The getTracksByTime function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the get_tracks_by_time function instead.",
+                      DeprecationWarning
+                      )
+        return self.get_tracks_by_time(start, end, include_start, include_end)
+
     def get_tracks_by_time(self, start, end, include_start=True, include_end=True):
         """
         Gets the points between the specified time range.
@@ -282,6 +443,14 @@ class DFTrack:
 
         return self.__class__(df_time, list(df_time))
 
+    def pointVideoNormalize(self):
+        warnings.warn("The pointVideoNormalize function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the point_video_normalize function instead.",
+                      DeprecationWarning
+                      )
+        return self.point_video_normalize()
+
     def point_video_normalize(self):
         df = self.df.copy()
 
@@ -303,6 +472,14 @@ class DFTrack:
         df_norm = df_norm.reset_index(drop=True)
 
         return self.__class__(df_norm, list(df_norm))
+
+    def timeVideoNormalize(self, time, framerate=5):
+        warnings.warn("The timeVideoNormalize function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the time_video_normalize function instead.",
+                      DeprecationWarning
+                      )
+        return self.time_video_normalize(time, framerate)
 
     def time_video_normalize(self, time, framerate=5):
         df = self.df.copy()
@@ -354,6 +531,14 @@ class DFTrack:
 
         return self.__class__(df_norm, list(df_norm))
 
+    def setColors(self, column_name, individual_tracks=True):
+        warnings.warn("The setColors function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the set_colors function instead.",
+                      DeprecationWarning
+                      )
+        return self.set_colors(column_name, individual_tracks)
+
     def set_colors(self, column_name, individual_tracks=True):
         if column_name not in self.df:
             raise TrackException('Column name not found', "'%s'" % column_name)
@@ -386,11 +571,34 @@ class DFTrack:
 
             return self.__class__(df, list(df))
 
+    def dropDuplicates(self):
+        """
+        Drop points of the same track with the same Latitude and Longitude.
+        """
+        warnings.warn("The dropDuplicates function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the drop_duplicates function instead.",
+                      DeprecationWarning
+                      )
+        return self.drop_duplicates()
+
     def drop_duplicates(self):
         """
         Drop points of the same track with the same Latitude and Longitude.
         """
         return self.__class__(self.df.drop_duplicates(['CodeRoute', 'Latitude', 'Longitude']))
+
+    def toDict(self):
+        """
+        Convert de data frame to a dictionary
+        like [{column -> value}, ... , {column -> value}]
+        """
+        warnings.warn("The toDict function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the to_dict function instead.",
+                      DeprecationWarning
+                      )
+        return self.to_dict()
 
     def to_dict(self):
         """
@@ -398,6 +606,21 @@ class DFTrack:
         like [{column -> value}, ... , {column -> value}]
         """
         return self.df.to_dict('records')
+
+    def getBounds(self):
+        """
+        Get the bounds of the DFTrack
+
+        Returns
+        -------
+        bounds: gpxpy.GPXBounds
+        """
+        warnings.warn("The getBounds function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the get_bounds function instead.",
+                      DeprecationWarning
+                      )
+        return self.get_bounds()
 
     def get_bounds(self):
         """
@@ -445,10 +668,17 @@ class DFTrack:
 
 
 class ReadTrack:
-
     def __init__(self, directory_or_file):
         self.directory_or_file = directory_or_file
         self.points_list = []
+
+    def readGPXFile(self, filename):
+        warnings.warn("The readGPXFile function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the read_gpx_file function instead.",
+                      DeprecationWarning
+                      )
+        return self.read_gpx_file(filename)
 
     def read_gpx_file(self, filename):
         try:
@@ -482,6 +712,14 @@ class ReadTrack:
         except FileNotFoundError as e:
             raise TrackException('GPX file "' + filename + '" not found', e)
 
+    def readGPX(self, files_to_read=None):
+        warnings.warn("The readGPX function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the read_gpx function instead.",
+                      DeprecationWarning
+                      )
+        return self.read_gpx(files_to_read)
+
     def read_gpx(self, files_to_read=None):
         if self.directory_or_file.lower().endswith('.gpx'):
             self.read_gpx_file(self.directory_or_file)
@@ -498,6 +736,14 @@ class ReadTrack:
                 n_file_read += 1
 
         return DFTrack(self.points_list)
+
+    def readCSV(self):
+        warnings.warn("The readCSV function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the read_csv function instead.",
+                      DeprecationWarning
+                      )
+        return self.read_csv()
 
     def read_csv(self):
         try:

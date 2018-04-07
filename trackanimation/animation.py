@@ -18,6 +18,7 @@
 # Python modules
 import io
 import subprocess
+import warnings
 
 try:
     # Python 3
@@ -85,6 +86,14 @@ class AnimationTrack:
 
         self.track_df.df = self.track_df.df.reset_index(drop=True)
 
+    def computePoints(self, track_df=None, linewidth=0.5):
+        warnings.warn("The computePoints function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the compute_points function instead.",
+                      DeprecationWarning
+                      )
+        return self.compute_points(track_df, linewidth)
+
     def compute_points(self, track_df=None, linewidth=0.5):
         track_points = {}
 
@@ -122,13 +131,21 @@ class AnimationTrack:
             track_points[track_code] = position
 
             if 'Color' in point:
-                self.axarr[int(point['Axes'])].plot(position['lng'], position['lat'], color=point['Color'],
-                                                    lw=linewidth, alpha=1)
+                self.axarr[int(point['Axes'])].plot(position['lng'], position['lat'],
+                                                    color=point['Color'], lw=linewidth, alpha=1)
             else:
-                self.axarr[int(point['Axes'])].plot(position['lng'], position['lat'], color='deepskyblue', lw=linewidth,
-                                                    alpha=1)
+                self.axarr[int(point['Axes'])].plot(position['lng'], position['lat'],
+                                                    color='deepskyblue', lw=linewidth, alpha=1)
 
             yield point, next_point
+
+    def computeTracks(self, linewidth=0.5):
+        warnings.warn("The computeTracks function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the compute_tracks function instead.",
+                      DeprecationWarning
+                      )
+        return self.compute_tracks(linewidth)
 
     def compute_tracks(self, linewidth=0.5):
         df = self.track_df.get_tracks().df
@@ -145,6 +162,14 @@ class AnimationTrack:
                 lng, lat = self.map[int(df_slice['Axes'].unique())].to_pixels(lat, lng)
 
             self.axarr[int(df_slice['Axes'].unique())].plot(lng, lat, color='deepskyblue', lw=linewidth, alpha=1)
+
+    def makeVideo(self, linewidth=0.5, output_file='video', framerate=5):
+        warnings.warn("The makeVideo function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the make_video function instead.",
+                      DeprecationWarning
+                      )
+        return self.make_video(linewidth, output_file, framerate)
 
     def make_video(self, linewidth=0.5, output_file='video', framerate=5):
         cmdstring = ('ffmpeg',
@@ -176,6 +201,14 @@ class AnimationTrack:
 
         pipe.stdin.close()
 
+    def makeMap(self, linewidth=2.5, output_file='map'):
+        warnings.warn("The makeMap function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the make_map function instead.",
+                      DeprecationWarning
+                      )
+        return self.make_map(linewidth, output_file)
+
     def make_map(self, linewidth=2.5, output_file='map'):
         for axarr in self.axarr:
             axarr.lines = []
@@ -191,6 +224,14 @@ class AnimationTrack:
 
         mplleaflet.save_html(fig=self.fig, tiles='esri_aerial',
                              fileobj=output_file + '.html')  # , close_mpl=False) # Creating html map
+
+    def makeImage(self, linewidth=0.5, output_file='image', framerate=5, save_fig_at=None):
+        warnings.warn("The makeImage function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the make_image function instead.",
+                      DeprecationWarning
+                      )
+        return self.make_image(linewidth, output_file, framerate, save_fig_at)
 
     def make_image(self, linewidth=0.5, output_file='image', framerate=5, save_fig_at=None):
         for axarr in self.axarr:
@@ -212,6 +253,14 @@ class AnimationTrack:
             self.compute_tracks(linewidth=linewidth)
 
         plt.savefig(output_file + '.png', facecolor=self.fig.get_facecolor())
+
+    def isNewFrame(self, point, next_point):
+        warnings.warn("The isNewFrame function is deprecated and "
+                      "will be removed in version 1.0.6. "
+                      "Use the is_new_frame function instead.",
+                      DeprecationWarning
+                      )
+        return self.is_new_frame(point, next_point)
 
     def is_new_frame(self, point, next_point):
         if next_point is not None:

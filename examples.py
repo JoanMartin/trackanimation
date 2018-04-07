@@ -21,7 +21,7 @@ from trackanimation.animation import AnimationTrack
 
 # Simple example
 input_directory = "example-routes/"
-ibiza_trk = trackanimation.read_track(input_directory)
+ibiza_trk = trackanimation.readTrack(input_directory)
 
 fig = AnimationTrack(df_points=ibiza_trk, dpi=300, bg_map=True, map_transparency=0.5)
 fig.make_video(output_file='simple-example', framerate=60, linewidth=1.0)

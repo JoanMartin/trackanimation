@@ -46,3 +46,6 @@ nosetests.xml
 
 # PyCharm
 .idea
+
+# Jupyter-Notebook
+.ipynb_checkpoints/
