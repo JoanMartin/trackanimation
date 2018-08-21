@@ -27,7 +27,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='trackanimation',
 
-    version='1.0.4-SNAPSHOT',
+    version='1.0.4',
 
     description='GPS Track Animation Library',
     long_description=long_description,
@@ -63,13 +63,13 @@ setup(
     packages=['trackanimation', ],
 
     install_requires=[
-        'geopy>=1.11.0',
-        'gpxpy>=1.1.2',
-        'image>=1.5.5',
-        'matplotlib>=2.0.2',
-        'mplleaflet>=0.0.5',
-        'pandas>=0.20.1',
-        'tqdm>=4.11.2',
-        'smopy>=0.0.6',
+        'geopy>=1.16.0',
+        'gpxpy>=1.3.3',
+        'pillow>=5.2.0',
+        'matplotlib>=2.2.3',
+        'mplleaflet==0.0.5',
+        'pandas>=0.23.4',
+        'tqdm>=4.25.0',
+        'smopy==0.0.6',
     ],
 )
