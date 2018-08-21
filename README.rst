@@ -1,7 +1,7 @@
 Track Animation
 ===============
 
-**Track Animation** is a Python 2 and 3 library that provides and easy and user-adjustable way of **creating visualizations from GPS data** easily and without any kind of technical tie for the user. It allows to import GPS data from **GPX** (GPS eXchange Format) and CSV files in order to manipulate it and, finally, create **videos**, **images**, sequences of images or **interactive maps** to analyze the tracks based on their elevation, speed, duration or any other indicator.
+**Track Animation** is a Python 2 and 3 library that provides an easy and user-adjustable way of **creating visualizations from GPS data** easily and without any kind of technical tie for the user. It allows to import GPS data from **GPX** (GPS eXchange Format) and CSV files in order to manipulate it and, finally, create **videos**, **images**, sequences of images or **interactive maps** to analyze the tracks based on their elevation, speed, duration or any other indicator.
 
 The main third party libraries that **Track Animation** uses are `gpxpy <https://github.com/tkrajina/gpxpy>`__ to parse and read GPX files, `pandas <http://pandas.pydata.org/>`__ to manipulate all the GPS data and `matplotlib <https://matplotlib.org/>`__ to plot it and save the visualizations.
 

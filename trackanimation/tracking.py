@@ -77,9 +77,10 @@ class DFTrack:
             The copy of DFTrack.
         """
         warnings.warn("The getTracks function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the get_tracks function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.get_tracks()
 
@@ -139,9 +140,10 @@ class DFTrack:
             None if anything is found.
         """
         warnings.warn("The getTracksByPlace function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the get_tracks_by_place function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.get_tracks_by_place(place, timeout, only_points)
 
@@ -199,9 +201,10 @@ class DFTrack:
             None if anything is found.
         """
         warnings.warn("The getTracksByPlaceGoogle function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the get_tracks_by_place_google function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.get_tracks_by_place_google(place, timeout, only_points)
 
@@ -268,9 +271,10 @@ class DFTrack:
             None if anything is found.
         """
         warnings.warn("The getTracksByPlaceOSM function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the get_tracks_by_place_osm function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.get_tracks_by_place_osm(place, timeout, only_points)
 
@@ -341,9 +345,10 @@ class DFTrack:
             A DFTrack with the points of the specified date range.
         """
         warnings.warn("The getTracksByDate function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the get_tracks_by_date function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.get_tracks_by_date(start, end, periods, freq)
 
@@ -406,9 +411,10 @@ class DFTrack:
             A DFTrack with the points of the specified date and time periods.
         """
         warnings.warn("The getTracksByTime function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the get_tracks_by_time function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.get_tracks_by_time(start, end, include_start, include_end)
 
@@ -445,9 +451,10 @@ class DFTrack:
 
     def pointVideoNormalize(self):
         warnings.warn("The pointVideoNormalize function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the point_video_normalize function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.point_video_normalize()
 
@@ -475,9 +482,10 @@ class DFTrack:
 
     def timeVideoNormalize(self, time, framerate=5):
         warnings.warn("The timeVideoNormalize function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the time_video_normalize function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.time_video_normalize(time, framerate)
 
@@ -533,9 +541,10 @@ class DFTrack:
 
     def setColors(self, column_name, individual_tracks=True):
         warnings.warn("The setColors function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the set_colors function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.set_colors(column_name, individual_tracks)
 
@@ -576,9 +585,10 @@ class DFTrack:
         Drop points of the same track with the same Latitude and Longitude.
         """
         warnings.warn("The dropDuplicates function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the drop_duplicates function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.drop_duplicates()
 
@@ -594,9 +604,10 @@ class DFTrack:
         like [{column -> value}, ... , {column -> value}]
         """
         warnings.warn("The toDict function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the to_dict function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.to_dict()
 
@@ -616,9 +627,10 @@ class DFTrack:
         bounds: gpxpy.GPXBounds
         """
         warnings.warn("The getBounds function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the get_bounds function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.get_bounds()
 
@@ -664,7 +676,7 @@ class DFTrack:
 
             df_concat.append(df.df)
 
-        return self.__class__(pd.concat(df_concat))
+        return self.__class__(pd.concat(df_concat, sort=True))
 
 
 class ReadTrack:
@@ -674,9 +686,10 @@ class ReadTrack:
 
     def readGPXFile(self, filename):
         warnings.warn("The readGPXFile function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the read_gpx_file function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.read_gpx_file(filename)
 
@@ -714,9 +727,10 @@ class ReadTrack:
 
     def readGPX(self, files_to_read=None):
         warnings.warn("The readGPX function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the read_gpx function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.read_gpx(files_to_read)
 
@@ -739,9 +753,10 @@ class ReadTrack:
 
     def readCSV(self):
         warnings.warn("The readCSV function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the read_csv function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.read_csv()
 

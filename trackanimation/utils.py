@@ -55,9 +55,10 @@ def getBearing(start_point, end_point):
         Bearing in degrees between the start and end points.
     """
     warnings.warn("The getBearing function is deprecated and "
-                  "will be removed in version 1.0.6. "
+                  "will be removed in version 2.0.0. "
                   "Use the get_bearing function instead.",
-                  DeprecationWarning
+                  FutureWarning,
+                  stacklevel=8
                   )
     return get_bearing(start_point, end_point)
 
@@ -113,9 +114,10 @@ def getCoordinates(start_point, end_point, distance_meters):
         A new point between the start and the end points.
     """
     warnings.warn("The getCoordinates function is deprecated and "
-                  "will be removed in version 1.0.6. "
+                  "will be removed in version 2.0.0. "
                   "Use the get_coordinates function instead.",
-                  DeprecationWarning
+                  FutureWarning,
+                  stacklevel=8
                   )
     return get_coordinates(start_point, end_point, distance_meters)
 
@@ -164,9 +166,10 @@ def getPointInTheMiddle(start_point, end_point, time_diff, point_idx):
         A new point between the start and the end points.
     """
     warnings.warn("The getPointInTheMiddle function is deprecated and "
-                  "will be removed in version 1.0.6. "
+                  "will be removed in version 2.0.0. "
                   "Use the get_point_in_the_middle function instead.",
-                  DeprecationWarning
+                  FutureWarning,
+                  stacklevel=8
                   )
     return get_point_in_the_middle(start_point, end_point, time_diff, point_idx)
 
@@ -250,9 +253,10 @@ def calculateCumTimeDiff(df):
     between points for each track of 'dfTrack'.
     """
     warnings.warn("The calculateCumTimeDiff function is deprecated and "
-                  "will be removed in version 1.0.6. "
+                  "will be removed in version 2.0.0. "
                   "Use the calculate_cum_time_diff function instead.",
-                  DeprecationWarning
+                  FutureWarning,
+                  stacklevel=8
                   )
     return calculate_cum_time_diff(df)
 
@@ -284,9 +288,10 @@ def isTimeFormat(time):
     of the 'time_formats'
     """
     warnings.warn("The isTimeFormat function is deprecated and "
-                  "will be removed in version 1.0.6. "
+                  "will be removed in version 2.0.0. "
                   "Use the is_time_format function instead.",
-                  DeprecationWarning
+                  FutureWarning,
+                  stacklevel=8
                   )
     return is_time_format(time)
 

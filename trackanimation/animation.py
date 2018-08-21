@@ -88,9 +88,10 @@ class AnimationTrack:
 
     def computePoints(self, track_df=None, linewidth=0.5):
         warnings.warn("The computePoints function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the compute_points function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.compute_points(track_df, linewidth)
 
@@ -141,9 +142,10 @@ class AnimationTrack:
 
     def computeTracks(self, linewidth=0.5):
         warnings.warn("The computeTracks function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the compute_tracks function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.compute_tracks(linewidth)
 
@@ -165,9 +167,10 @@ class AnimationTrack:
 
     def makeVideo(self, linewidth=0.5, output_file='video', framerate=5):
         warnings.warn("The makeVideo function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the make_video function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.make_video(linewidth, output_file, framerate)
 
@@ -203,9 +206,10 @@ class AnimationTrack:
 
     def makeMap(self, linewidth=2.5, output_file='map'):
         warnings.warn("The makeMap function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the make_map function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.make_map(linewidth, output_file)
 
@@ -227,9 +231,10 @@ class AnimationTrack:
 
     def makeImage(self, linewidth=0.5, output_file='image', framerate=5, save_fig_at=None):
         warnings.warn("The makeImage function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the make_image function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.make_image(linewidth, output_file, framerate, save_fig_at)
 
@@ -256,9 +261,10 @@ class AnimationTrack:
 
     def isNewFrame(self, point, next_point):
         warnings.warn("The isNewFrame function is deprecated and "
-                      "will be removed in version 1.0.6. "
+                      "will be removed in version 2.0.0. "
                       "Use the is_new_frame function instead.",
-                      DeprecationWarning
+                      FutureWarning,
+                      stacklevel=8
                       )
         return self.is_new_frame(point, next_point)
 
