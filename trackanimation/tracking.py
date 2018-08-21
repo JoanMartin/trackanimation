@@ -459,7 +459,7 @@ class DFTrack:
 
 			df_concat.append(df.df) 
 
-		return self.__class__(pd.concat(df_concat))
+		return self.__class__(pd.concat(df_concat, sort=True))
 
 
 class ReadTrack:
