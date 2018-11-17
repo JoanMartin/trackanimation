@@ -29,7 +29,7 @@ Dependencies
 * `geopy <https://github.com/geopy/geopy>`__
 * `smopy <https://github.com/rossant/smopy>`__
 * `mplleaflet <https://github.com/jwass/mplleaflet>`__
-* `image <http://pillow.readthedocs.io/en/3.4.x/reference/Image.html>`__
+* `pillow <https://python-pillow.org/>`__
 * `tqdm <https://github.com/noamraph/tqdm>`__
 * `FFmpeg <https://ffmpeg.org/>`__
 
