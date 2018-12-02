@@ -56,5 +56,8 @@ sant_josep_trk = ibiza_trk.get_tracks_by_place('Sant Josep de sa Talaia', only_p
 ibiza_trk = ibiza_trk.set_colors('Speed', individual_tracks=True)
 sant_josep_trk = sant_josep_trk.set_colors('Speed', individual_tracks=True)
 
-fig = AnimationTrack(df_points=[ibiza_trk, sant_josep_trk], dpi=300, bg_map=True, map_transparency=0.5)
-fig.make_image(output_file='multiple-axes')
+fig = AnimationTrack(df_points=[ibiza_trk, sant_josep_trk], dpi=300, bg_map=True, aspect='equal', map_transparency=0.5)
+fig.make_image(output_file='multiple-axes-equal')
+
+fig = AnimationTrack(df_points=[ibiza_trk, sant_josep_trk], dpi=300, bg_map=True, aspect='auto', map_transparency=0.5)
+fig.make_image(output_file='multiple-axes-auto')

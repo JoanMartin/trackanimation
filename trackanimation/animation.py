@@ -44,7 +44,7 @@ from trackanimation.utils import TrackException
 
 
 class AnimationTrack:
-    def __init__(self, df_points, dpi=100, bg_map=True, map_transparency=0.5):
+    def __init__(self, df_points, dpi=100, bg_map=True, aspect='equal', map_transparency=0.5):
         if not isinstance(df_points, list):
             df_points = [df_points]
 
@@ -66,7 +66,7 @@ class AnimationTrack:
             max_lng = trk_bounds.max_longitude
             if bg_map:
                 self.map.append(smopy.Map((min_lat, min_lng, max_lat, max_lng)))
-                self.axarr[i].imshow(self.map[i].img, aspect='auto', alpha=map_transparency)
+                self.axarr[i].imshow(self.map[i].img, aspect=aspect, alpha=map_transparency)
             else:
                 self.axarr[i].set_ylim([min_lat, max_lat])
                 self.axarr[i].set_xlim([min_lng, max_lng])

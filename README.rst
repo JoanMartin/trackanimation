@@ -125,4 +125,4 @@ More documentation and examples can be found at `Track Animation PDF document <h
 .. |Simple-Example| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/simple-example.gif
 .. |Filtering-Place| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/filtering-by-place.gif
 .. |Coloring-Tracks| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/coloring-map-by-speed.gif
-.. |Multiple-Axes| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/multiple-axes.png
+.. |Multiple-Axes| image:: https://raw.githubusercontent.com/JoanMartin/trackanimation/master/example-results/multiple-axes-auto.png
