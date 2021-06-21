@@ -70,6 +70,6 @@ setup(
         'mplleaflet==0.0.5',
         'pandas>=0.23.4',
         'tqdm>=4.25.0',
-        'smopy==0.0.6',
+        'smopy==0.0.7',
     ],
 )
