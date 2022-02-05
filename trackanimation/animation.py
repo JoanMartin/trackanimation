@@ -18,7 +18,6 @@
 # Python modules
 import io
 import subprocess
-import warnings
 
 try:
     # Python 3
@@ -33,148 +32,130 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt  # Attention: include the .use('agg') before importing pyplot: DISPLAY issues
 import mplleaflet
-import numpy as np
-from PIL import Image
-from tqdm import tqdm
+import numpy
+import PIL
+import tqdm
 import smopy
 
 # Own modules
 from trackanimation.tracking import DFTrack
 from trackanimation.utils import TrackException
 
+def plot_line(list_axes, iterable, lat, lon, **kwargs):
+    list_axes[iterable].plot(lon, lat, **kwargs)
+
+    return
 
 class AnimationTrack:
-    def __init__(self, df_points, dpi=100, bg_map=True, aspect='equal', map_transparency=0.5):
-        if not isinstance(df_points, list):
-            df_points = [df_points]
+    def __init__(self, list_dfts, dpi=100, bg_map=True, aspect='equal', map_transparency=0.5):
+        if not isinstance(list_dfts, list):
+            list_dfts = [list_dfts]
 
-        self.fig, self.axarr = plt.subplots(len(df_points), 1, facecolor='0.05', dpi=dpi)
-        if not isinstance(self.axarr, np.ndarray):
-            self.axarr = [self.axarr]
+        self.fig, self.list_axes = plt.subplots(len(list_dfts), 1, facecolor='0.05', dpi=dpi)
+        if not isinstance(self.list_axes, numpy.ndarray):
+            self.list_axes = [self.list_axes]
 
         self.map = []
-        self.track_df = DFTrack()
-        for i in range(len(df_points)):
-            df = df_points[i].get_tracks()
+        self.dft = DFTrack()
+        for i, dfts in enumerate(list_dfts):
+            df = dfts.get_copy()
             df.df['Axes'] = i
-            self.track_df = self.track_df.concat(df)
+            self.dft = self.dft.concat_dfts(df)
 
             trk_bounds = df.get_bounds()
             min_lat = trk_bounds.min_latitude
             max_lat = trk_bounds.max_latitude
-            min_lng = trk_bounds.min_longitude
-            max_lng = trk_bounds.max_longitude
+            min_lon = trk_bounds.min_longitude
+            max_lon = trk_bounds.max_longitude
             if bg_map:
-                self.map.append(smopy.Map((min_lat, min_lng, max_lat, max_lng)))
-                self.axarr[i].imshow(self.map[i].img, aspect=aspect, alpha=map_transparency)
+                self.map.append(smopy.Map((min_lat, min_lon, max_lat, max_lon)))
+                self.list_axes[i].imshow(self.map[i].img, aspect=aspect, alpha=map_transparency)
             else:
-                self.axarr[i].set_ylim([min_lat, max_lat])
-                self.axarr[i].set_xlim([min_lng, max_lng])
+                self.list_axes[i].set_ylim([min_lat, max_lat])
+                self.list_axes[i].set_xlim([min_lon, max_lon])
 
-            self.axarr[i].set_facecolor('0.05')
-            self.axarr[i].tick_params(color='0.05', labelcolor='0.05')
-            for spine in self.axarr[i].spines.values():
+            self.list_axes[i].set_facecolor('0.05')
+            self.list_axes[i].tick_params(color='0.05', labelcolor='0.05')
+            for spine in self.list_axes[i].spines.values():
                 spine.set_edgecolor('white')
 
         self.fig.tight_layout()
         plt.subplots_adjust(wspace=0.1, hspace=0.1)
 
-        if 'VideoFrame' in self.track_df.df:
-            self.track_df = self.track_df.sort(['VideoFrame', 'Axes', 'CodeRoute'])
+        if 'VideoFrame' in self.dft.df:
+            self.dft = self.dft.sort_columns(['VideoFrame', 'Axes', 'CodeRoute'])
         else:
-            self.track_df = self.track_df.sort(['Axes', 'Date'])
+            self.dft = self.dft.sort_columns(['Axes', 'Date'])
 
-        self.track_df.df = self.track_df.df.reset_index(drop=True)
+        self.dft.df = self.dft.df.reset_index(drop=True)
 
-    def computePoints(self, track_df=None, linewidth=0.5):
-        warnings.warn("The computePoints function is deprecated and "
-                      "will be removed in version 2.0.0. "
-                      "Use the compute_points function instead.",
-                      FutureWarning,
-                      stacklevel=8
-                      )
-        return self.compute_points(track_df, linewidth)
+    def calculate_lat_lon(self, lat_given, lon_given, iter_axis):
+        lat = lat_given
+        lon = lon_given
 
-    def compute_points(self, track_df=None, linewidth=0.5):
-        track_points = {}
+        if self.map:
+            lon, lat = self.map[int(iter_axis)].to_pixels(lat, lon)
 
-        if track_df is None:
-            points = self.track_df.to_dict()
+        return lat, lon
+
+    def calculate_dict_position(self, dict_points_track, dict_point):
+
+        track_code = str(dict_point['CodeRoute']) + "_" + str(dict_point['Axes'])
+        lat, lon = self.calculate_lat_lon(
+            dict_point['Latitude'], dict_point['Longitude'], dict_point['Axes'])
+
+        dict_position = dict_points_track.get(track_code, {'lat': [], 'lon': []}) # default
+
+        if len(dict_position['lat']) > 1 and len(dict_position['lon']) > 1:
+            del dict_position['lat'][0]
+            del dict_position['lon'][0]
+
+            # Remove plotted line
+            # for axarr in self.list_axes:
+            # 	for c in axarr.get_lines():
+            # 		if c.get_gid() == track_code:
+            # 			c.remove()
+
+        dict_position['lat'].append(lat)
+        dict_position['lon'].append(lon)
+
+        return dict_position, track_code
+
+    def generate_points(self, dft=None, lw=0.5):
+        dict_points_track = {}
+
+        if dft is None:
+            list_dict_points = self.dft.to_dict('records')
         else:
-            points = track_df.to_dict()
+            list_dict_points = dft.to_dict('records')
 
-        for point, next_point in zip_longest(tqdm(points, desc='Computing points'), points[1:], fillvalue=None):
-            track_code = str(point['CodeRoute']) + "_" + str(point['Axes'])
+        iter_unpack = zip_longest(tqdm.tqdm(list_dict_points, desc='Computing points'), list_dict_points[1:], fillvalue=None)
+        for point, next_point in iter_unpack:
 
-            # Check if the track is in the data structure
-            if track_code in track_points:
-                position = track_points[track_code]
+            dict_position, track_code = self.calculate_dict_position(dict_points_track, point)
+            dict_points_track[track_code] = dict_position
 
-                if len(position['lat']) > 1 and len(position['lng']) > 1:
-                    del position['lat'][0]
-                    del position['lng'][0]
-
-                    # Remove plotted line
-                    # for axarr in self.axarr:
-                    # 	for c in axarr.get_lines():
-                    # 		if c.get_gid() == track_code:
-                    # 			c.remove()
-            else:
-                position = {'lat': [], 'lng': []}
-
-            lat = point['Latitude']
-            lng = point['Longitude']
-            if self.map:
-                lng, lat = self.map[int(point['Axes'])].to_pixels(lat, lng)
-
-            position['lat'].append(lat)
-            position['lng'].append(lng)
-            track_points[track_code] = position
-
-            if 'Color' in point:
-                self.axarr[int(point['Axes'])].plot(position['lng'], position['lat'],
-                                                    color=point['Color'], lw=linewidth, alpha=1)
-            else:
-                self.axarr[int(point['Axes'])].plot(position['lng'], position['lat'],
-                                                    color='deepskyblue', lw=linewidth, alpha=1)
+            plot_line(self.list_axes, int(point['Axes']), dict_position['lat'], dict_position['lon'], 
+                    color = point.get('Color', 'deepskyblue'), lw = lw, alpha=1)
 
             yield point, next_point
 
-    def computeTracks(self, linewidth=0.5):
-        warnings.warn("The computeTracks function is deprecated and "
-                      "will be removed in version 2.0.0. "
-                      "Use the compute_tracks function instead.",
-                      FutureWarning,
-                      stacklevel=8
-                      )
-        return self.compute_tracks(linewidth)
+    def plot_points_track(self, lw=0.5):
+        df = self.dft.get_copy().df
 
-    def compute_tracks(self, linewidth=0.5):
-        df = self.track_df.get_tracks().df
+        # process dataframe
+        df.loc[:, 'track_code'] = df['CodeRoute'].map(str) + '_' + df['Axes'].map(str)
+        groups_track_codes = df.groupby('track_code')
 
-        df['track_code'] = df['CodeRoute'].map(str) + '_' + df['Axes'].map(str)
-        grouped = df['track_code'].unique()
+        for track_code, track_code_df in tqdm.tqdm(groups_track_codes, desc='Track codes'):
 
-        for name in tqdm(grouped, desc='Groups'):
-            df_slice = df[df['track_code'] == name]
+            lat, lon = self.calculate_lat_lon(
+                track_code_df['Latitude'].values, track_code_df['Longitude'].values, track_code_df['Axes'].unique())
 
-            lat = df_slice['Latitude'].values
-            lng = df_slice['Longitude'].values
-            if self.map:
-                lng, lat = self.map[int(df_slice['Axes'].unique())].to_pixels(lat, lng)
+            plot_line(self.list_axes, int(track_code_df['Axes'].unique()), lat, lon, 
+                color = 'deepskyblue', lw = lw, alpha=1)
 
-            self.axarr[int(df_slice['Axes'].unique())].plot(lng, lat, color='deepskyblue', lw=linewidth, alpha=1)
-
-    def makeVideo(self, linewidth=0.5, output_file='video', framerate=5):
-        warnings.warn("The makeVideo function is deprecated and "
-                      "will be removed in version 2.0.0. "
-                      "Use the make_video function instead.",
-                      FutureWarning,
-                      stacklevel=8
-                      )
-        return self.make_video(linewidth, output_file, framerate)
-
-    def make_video(self, linewidth=0.5, output_file='video', framerate=5):
+    def make_video(self, lw=0.5, output_file='video', framerate=5):
         cmdstring = ('ffmpeg',
                      '-y',
                      '-loglevel', 'quiet',
@@ -189,92 +170,61 @@ class AnimationTrack:
 
         pipe = subprocess.Popen(cmdstring, stdin=subprocess.PIPE)
 
-        for axarr in self.axarr:
+        for axarr in self.list_axes:
             axarr.lines = []
 
-        for point, next_point in self.compute_points(linewidth=linewidth):
-            if self.is_new_frame(point, next_point):
+        for point, next_point in self.generate_points(lw=lw):
+            if self.check_frame_new(point, next_point):
                 buffer = io.BytesIO()
                 canvas = plt.get_current_fig_manager().canvas
                 canvas.draw()
-                pil_image = Image.frombytes('RGB', canvas.get_width_height(), canvas.tostring_rgb())
+                pil_image = PIL.Imagefrombytes('RGB', canvas.get_width_height(), canvas.tostring_rgb())
                 pil_image.save(buffer, 'PNG')
                 buffer.seek(0)
                 pipe.stdin.write(buffer.read())
 
         pipe.stdin.close()
 
-    def makeMap(self, linewidth=2.5, output_file='map'):
-        warnings.warn("The makeMap function is deprecated and "
-                      "will be removed in version 2.0.0. "
-                      "Use the make_map function instead.",
-                      FutureWarning,
-                      stacklevel=8
-                      )
-        return self.make_map(linewidth, output_file)
-
-    def make_map(self, linewidth=2.5, output_file='map'):
-        for axarr in self.axarr:
+    def make_map(self, lw=2.5, output_file='map'):
+        for axarr in self.list_axes:
             axarr.lines = []
 
         if self.map:
             raise TrackException('Map background found in the figure', 'Remove it to create an interactive HTML map.')
 
-        if 'Color' in self.track_df.df:
-            for point, next_point in self.compute_points(linewidth=linewidth):
+        if 'Color' in self.dft.df:
+            for point, next_point in self.generate_points(lw=lw):
                 pass
         else:
-            self.compute_tracks(linewidth=linewidth)
+            self.plot_points_track(lw=lw)
 
         mplleaflet.save_html(fig=self.fig, tiles='esri_aerial',
                              fileobj=output_file + '.html')  # , close_mpl=False) # Creating html map
 
-    def makeImage(self, linewidth=0.5, output_file='image', framerate=5, save_fig_at=None):
-        warnings.warn("The makeImage function is deprecated and "
-                      "will be removed in version 2.0.0. "
-                      "Use the make_image function instead.",
-                      FutureWarning,
-                      stacklevel=8
-                      )
-        return self.make_image(linewidth, output_file, framerate, save_fig_at)
-
-    def make_image(self, linewidth=0.5, output_file='image', framerate=5, save_fig_at=None):
-        for axarr in self.axarr:
+    def make_image(self, lw=0.5, output_file='image', framerate=5, save_fig_at=None):
+        for axarr in self.list_axes:
             axarr.lines = []
 
         frame = 1
-        if save_fig_at is not None or 'Color' in self.track_df.df:
+        if save_fig_at is not None or 'Color' in self.dft.df:
             if not isinstance(save_fig_at, list):
-                # If it is not a list, make a list of one element
                 save_fig_at = [save_fig_at]
 
-            for point, next_point in self.compute_points(linewidth=linewidth):
-                if self.is_new_frame(point, next_point):
+            for point, next_point in self.generate_points(lw=lw):
+                if self.check_frame_new(point, next_point):
                     second = frame / framerate
                     if second in save_fig_at:
                         plt.savefig(output_file + '_' + str(second) + '.png', facecolor=self.fig.get_facecolor())
                     frame = frame + 1
         else:
-            self.compute_tracks(linewidth=linewidth)
+            self.plot_points_track(lw=lw)
 
         plt.savefig(output_file + '.png', facecolor=self.fig.get_facecolor())
 
-    def isNewFrame(self, point, next_point):
-        warnings.warn("The isNewFrame function is deprecated and "
-                      "will be removed in version 2.0.0. "
-                      "Use the is_new_frame function instead.",
-                      FutureWarning,
-                      stacklevel=8
-                      )
-        return self.is_new_frame(point, next_point)
-
-    def is_new_frame(self, point, next_point):
+    def check_frame_new(self, point, next_point):
         if next_point is not None:
             if 'VideoFrame' in point:
-                new_frame = point['VideoFrame'] != next_point['VideoFrame']
-            else:
-                new_frame = point['Date'] != next_point['Date']
-        else:
-            new_frame = False
+                return point['VideoFrame'] != next_point['VideoFrame']
+            return point['Date'] != next_point['Date']
 
-        return new_frame
+        return False

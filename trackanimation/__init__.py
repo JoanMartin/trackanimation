@@ -14,25 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-# Python modules
-import os
-import warnings
-
-# Own modules
 from trackanimation.tracking import ReadTrack
 from trackanimation.tracking import TrackException
 
-
-def readTrack(directory_or_file, files_to_read=None):
-    warnings.warn("The readTrack function is deprecated and "
-                  "will be removed in version 2.0.0. "
-                  "Use the read_track function instead.",
-                  FutureWarning,
-                  stacklevel=8
-                  )
-    return read_track(directory_or_file, files_to_read)
-
+import os
 
 def read_track(directory_or_file, files_to_read=None):
     read_track = ReadTrack(directory_or_file)

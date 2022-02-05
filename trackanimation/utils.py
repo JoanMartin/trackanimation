@@ -19,16 +19,13 @@
 import math
 import warnings
 import datetime
-import datetime as dt
-from datetime import datetime
 
 # Third party modules
 import geopy
-import geopy.distance as geo_dist
-import pandas as pd
+import geopy.distance
+import pandas
 
 TIME_FORMATS = ['%H:%M', '%H%M', '%I:%M%p', '%I%M%p', '%H:%M:%S', '%H%M%S', '%I:%M:%S%p', '%I%M%S%p']
-
 
 class TrackException(Exception):
     """
@@ -39,48 +36,24 @@ class TrackException(Exception):
         super(TrackException, self).__init__(msg + (": %s" % original_exception))
         self.original_exception = original_exception
 
-
-def getBearing(start_point, end_point):
+def get_bearing(dataframe_start, dataframe_end):
     """
     Calculates the bearing between two points.
 
     Parameters
     ----------
-    start_point: geopy.Point
-    end_point: geopy.Point
+    dataframe_start: geopy.Point
+    dataframe_end: geopy.Point
 
     Returns
     -------
     point: int
         Bearing in degrees between the start and end points.
     """
-    warnings.warn("The getBearing function is deprecated and "
-                  "will be removed in version 2.0.0. "
-                  "Use the get_bearing function instead.",
-                  FutureWarning,
-                  stacklevel=8
-                  )
-    return get_bearing(start_point, end_point)
-
-
-def get_bearing(start_point, end_point):
-    """
-    Calculates the bearing between two points.
-
-    Parameters
-    ----------
-    start_point: geopy.Point
-    end_point: geopy.Point
-
-    Returns
-    -------
-    point: int
-        Bearing in degrees between the start and end points.
-    """
-    start_lat = math.radians(start_point.latitude)
-    start_lng = math.radians(start_point.longitude)
-    end_lat = math.radians(end_point.latitude)
-    end_lng = math.radians(end_point.longitude)
+    start_lat = math.radians(dataframe_start.latitude)
+    start_lng = math.radians(dataframe_start.longitude)
+    end_lat = math.radians(dataframe_end.latitude)
+    end_lng = math.radians(dataframe_end.longitude)
 
     d_lng = end_lng - start_lng
     if abs(d_lng) > math.pi:
@@ -96,16 +69,15 @@ def get_bearing(start_point, end_point):
 
     return bearing
 
-
-def getCoordinates(start_point, end_point, distance_meters):
+def get_coordinates(dataframe_start, dataframe_end, distance_meters):
     """
     Calculates the new coordinates between two points depending
     of the specified distance and the calculated bearing.
 
     Parameters
     ----------
-    start_point: geopy.Point
-    end_point: geopy.Point
+    dataframe_start: geopy.Point
+    dataframe_end: geopy.Point
     distance_meters: float
 
     Returns
@@ -113,49 +85,21 @@ def getCoordinates(start_point, end_point, distance_meters):
     point: geopy.Point
         A new point between the start and the end points.
     """
-    warnings.warn("The getCoordinates function is deprecated and "
-                  "will be removed in version 2.0.0. "
-                  "Use the get_coordinates function instead.",
-                  FutureWarning,
-                  stacklevel=8
-                  )
-    return get_coordinates(start_point, end_point, distance_meters)
-
-
-def get_coordinates(start_point, end_point, distance_meters):
-    """
-    Calculates the new coordinates between two points depending
-    of the specified distance and the calculated bearing.
-
-    Parameters
-    ----------
-    start_point: geopy.Point
-    end_point: geopy.Point
-    distance_meters: float
-
-    Returns
-    -------
-    point: geopy.Point
-        A new point between the start and the end points.
-    """
-    bearing = get_bearing(start_point, end_point)
+    bearing = get_bearing(dataframe_start, dataframe_end)
 
     distance_km = distance_meters / 1000
-    d = geo_dist.VincentyDistance(kilometers=distance_km)
-    destination = d.destination(point=start_point, bearing=bearing)
+    d = geopy.distance.VincentyDistance(kilometers=distance_km)
+    destination = d.destination(point=dataframe_start, bearing=bearing)
 
     return geopy.Point(destination.latitude, destination.longitude)
 
-
-def getPointInTheMiddle(start_point, end_point, time_diff, point_idx):
+def get_point_in_the_middle(dataframe_start, dataframe_end, time_diff, point_idx):
     """
     Calculates a new point between two points depending of the
     time difference between them and the point index.
 
     Parameters
     ----------
-    start_point: DataFrame
-    end_point: DataFrame
     time_diff: float
     point_idx: int
         Point index between the start and the end points
@@ -165,49 +109,24 @@ def getPointInTheMiddle(start_point, end_point, time_diff, point_idx):
     point: list
         A new point between the start and the end points.
     """
-    warnings.warn("The getPointInTheMiddle function is deprecated and "
-                  "will be removed in version 2.0.0. "
-                  "Use the get_point_in_the_middle function instead.",
-                  FutureWarning,
-                  stacklevel=8
-                  )
-    return get_point_in_the_middle(start_point, end_point, time_diff, point_idx)
+    time_proportion = (time_diff * point_idx) / dataframe_end['TimeDifference'].item()
 
-
-def get_point_in_the_middle(start_point, end_point, time_diff, point_idx):
-    """
-    Calculates a new point between two points depending of the
-    time difference between them and the point index.
-
-    Parameters
-    ----------
-    start_point: DataFrame
-    end_point: DataFrame
-    time_diff: float
-    point_idx: int
-        Point index between the start and the end points
-
-    Returns
-    -------
-    point: list
-        A new point between the start and the end points.
-    """
-    time_proportion = (time_diff * point_idx) / end_point['TimeDifference'].item()
-
-    distance_proportion = end_point['Distance'].item() * time_proportion
-    time_diff_proportion = end_point['TimeDifference'].item() * time_proportion
+    distance_proportion = dataframe_end['Distance'].item() * time_proportion
+    time_diff_proportion = dataframe_end['TimeDifference'].item() * time_proportion
     speed = distance_proportion / time_diff_proportion
     distance = time_diff * speed
-    cum_time_diff = int(start_point['CumTimeDiff'].item() + time_diff_proportion)
-    # date = datetime.strptime(start_point['Date'].item(), '%Y-%m-%d %H:%M:%S') + dt.timedelta(seconds=int(
+    cum_time_diff = int(dataframe_start['CumTimeDiff'].item() + time_diff_proportion)
+    # date = datetime.datetime.strptime(dataframe_start['Date'].item(), '%Y-%m-%d %H:%M:%S') + datetime.datetime.timedelta(seconds=int(
     # time_diff_proportion))
-    date = pd.to_datetime(start_point['Date'].astype(str), format='%Y-%m-%d %H:%M:%S') + dt.timedelta(
-        seconds=int(time_diff_proportion))
-    altitude = (end_point['Altitude'].item() + start_point['Altitude'].item()) / 2
-    name = start_point['CodeRoute'].item()
+    date = pandas.to_datetime(
+        dataframe_start['Date'].astype(str), 
+        format='%Y-%m-%d %H:%M:%S') + datetime.datetime.timedelta(seconds=int(time_diff_proportion)
+        )
+    altitude = (dataframe_end['Altitude'].item() + dataframe_start['Altitude'].item()) / 2
+    name = dataframe_start['CodeRoute'].item()
 
-    geo_start = geopy.Point(start_point['Latitude'].item(), start_point['Longitude'].item())
-    geo_end = geopy.Point(end_point['Latitude'].item(), end_point['Longitude'].item())
+    geo_start = geopy.Point(dataframe_start['Latitude'].item(), dataframe_start['Longitude'].item())
+    geo_end = geopy.Point(dataframe_end['Latitude'].item(), dataframe_end['Longitude'].item())
     middle_point = get_coordinates(geo_start, geo_end, distance_proportion)
 
     df_middle_point = ([[name, middle_point.latitude, middle_point.longitude, altitude,
@@ -216,20 +135,12 @@ def get_point_in_the_middle(start_point, end_point, time_diff, point_idx):
     return df_middle_point
 
 
-def rgb(value, minimum, maximum):
+def calculate_rgb(value, minimum, maximum):
     """
-    Calculates an rgb color of a value depending of
+    Calculates an rgb color of a value depending on
     the minimum and maximum values.
 
-    Parameters
-    ----------
-    value: float or int
-    minimum: float or int
-    maximum: float or int
-
-    Returns
-    -------
-    rgb: tuple
+    Returns tuple
     """
     value = float(value)
     minimum = float(minimum)
@@ -246,21 +157,6 @@ def rgb(value, minimum, maximum):
 
     return r / 255.0, g / 255.0, b / 255.0
 
-
-def calculateCumTimeDiff(df):
-    """
-    Calculates the cumulative of the time difference
-    between points for each track of 'dfTrack'.
-    """
-    warnings.warn("The calculateCumTimeDiff function is deprecated and "
-                  "will be removed in version 2.0.0. "
-                  "Use the calculate_cum_time_diff function instead.",
-                  FutureWarning,
-                  stacklevel=8
-                  )
-    return calculate_cum_time_diff(df)
-
-
 def calculate_cum_time_diff(df):
     """
     Calculates the cumulative of the time difference
@@ -268,33 +164,18 @@ def calculate_cum_time_diff(df):
     """
     df = df.copy()
 
-    df_cum = pd.DataFrame()
+    df_cum = pandas.DataFrame()
     grouped = df['CodeRoute'].unique()
 
     for name in grouped:
         df_slice = df[df['CodeRoute'] == name]
         df_slice = df_slice.reset_index(drop=True)
         df_slice['CumTimeDiff'] = df_slice['TimeDifference'].cumsum()
-        df_cum = pd.concat([df_cum, df_slice])
+        df_cum = pandas.concat([df_cum, df_slice])
 
     df_cum = df_cum.reset_index(drop=True)
 
     return df_cum
-
-
-def isTimeFormat(time):
-    """
-    Check if 'time' variable has the format of one
-    of the 'time_formats'
-    """
-    warnings.warn("The isTimeFormat function is deprecated and "
-                  "will be removed in version 2.0.0. "
-                  "Use the is_time_format function instead.",
-                  FutureWarning,
-                  stacklevel=8
-                  )
-    return is_time_format(time)
-
 
 def is_time_format(time):
     """
@@ -306,7 +187,7 @@ def is_time_format(time):
 
     for time_format in TIME_FORMATS:
         try:
-            datetime.strptime(time, time_format)
+            datetime.datetime.strptime(time, time_format)
             return True
         except ValueError:
             pass
